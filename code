@@ -1,0 +1,53 @@
+import cv2
+import os
+
+# Load Haar cascade face detector
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+# Open webcam
+cap = cv2.VideoCapture(0)
+
+# Folder to save captured faces
+save_dir = "captured_faces"
+os.makedirs(save_dir, exist_ok=True)
+
+face_count = 0
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # Convert to grayscale
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # Detect faces
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5)
+
+    # Draw rectangles around faces
+    for (x, y, w, h) in faces:
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+    # Show live video
+    cv2.imshow("Face Detection - Press 'c' to capture face", frame)
+
+    # Wait for key press
+    key = cv2.waitKey(1) & 0xFF
+
+    # Press 'c' to capture face(s)
+    if key == ord('c'):
+        for (x, y, w, h) in faces:
+            face_img = frame[y:y+h, x:x+w]
+            filename = os.path.join(save_dir, f"face_{face_count}.jpg")
+            cv2.imwrite(filename, face_img)
+            print(f"Saved: {filename}")
+            face_count += 1
+
+    # Press 'q' to quit
+    elif key == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+
+
