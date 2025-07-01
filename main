@@ -1,0 +1,17 @@
+ Features
+1.Real-time face detection using Haar Cascade
+2.Capture and save cropped face images with a single key press
+3.Automatically stores images in a specified folder
+4.Lightweight and easy to run on any system with a webcam
+
+ Technologies Used
+1.Python
+2.OpenCV
+3.Haar Cascade Classifier
+
+ How to Use
+1.Clone this repository
+2.Run the script:
+python face_image_collector.py
+3.Press c to capture and save detected faces
+4.Press q to quit the application
